@@ -13,8 +13,8 @@ module.exports = {
     proxy: {
       '/api': {
         // target:process.env.VUE_APP_URL,
-        // target:"http://xh4j5t.natappfree.cc",
-        target:'http://120.92.94.95:5000',
+        target:"http://nmq4ar.natappfree.cc",
+        // target:'http://120.92.94.95:5000',
         changeOrigin: true,
         pathRewrite: {
             '^/api': ''

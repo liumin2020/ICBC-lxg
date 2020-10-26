@@ -1,6 +1,6 @@
 
 <template>
-    <div id="pic" @click="goHome" style="top:10%;padding:0px; " v-if="url" class="backIcon">
+    <div id="pic" @click="goHome" style="top:10%;left:75%;padding:0px; " v-if="url" class="backIcon">
     
         <img src="../assets/images/moveIcon.png" class="moveImg" v-if="alertCount>0"/>
         <img src="../assets/images/icon_baojing.png" class="moveImg" v-if="alertCount<=0"/>
@@ -158,20 +158,27 @@ export default {
     touch-action: none;
 .moveImg
     width px2rem(128px)
+.relatBox
+    position relative
+    width 100%
+    height px2rem(17px)
 .absoluteP
     position absolute 
-    top 67%
-    left 1%
+    top -231%
+    left 3%
+    transform translate(-0%,-30%)
     text-align center
     color #fff
-    font-size px2rem(16px)
+    font-size px2rem(17px)
+    font-weight 700
 
 .absoluteP1
     position absolute 
-    top 67%
-    left 12%
+    top -231%
+    left 20%
+    transform translate(-6%,-30%)
     text-align center
     color #fff
-    font-size px2rem(16px)
+    font-size px2rem(22px)
 
 </style>
