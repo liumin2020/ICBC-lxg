@@ -33,7 +33,7 @@ export default {
   watch:{
     isCheckedIndex(newData,oldData) {
       var lineBox = this.$refs.lineBoxWidth.offsetWidth
-      this.translateX += (newData - oldData) * lineBox/3
+      this.translateX += (newData - oldData) * lineBox/6
     }
   }
 };
@@ -76,7 +76,7 @@ px2rem(designpx) {
 .lineflex {
   display: flex;
   flex-direction row
-  width 33.33%
+  width 17%
   padding 0 30px
   box-sizing border-box
   justify-content: space-between;
