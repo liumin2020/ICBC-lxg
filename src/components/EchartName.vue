@@ -37,226 +37,439 @@ export default {
         }
     },
     data() {
-        return {};
+        return {
+            flag: true,
+        };
     },
     methods: {
-        getEchartData(x, y, maxVal,) {
+        getEchartData(x, y, maxVal) {
             // var canvasLine = document.getElementById("canvasLine");
             var myEchart = echarts.init(this.$refs.canvasLine);
-            myEchart.clear();
-            var option = {
-                tooltip: {
-                    trigger: "axis",
-                    backgroundColor: "#6797ff", //通过设置rgba调节背景颜色与透明度
-                    color: "#fff",
-                    borderWidth: "1",
-                    fontSize: "10",
-                    fontWeight: "200",
-                    borderColor: "transparent",
-                    textStyle: {
-                        color: "white",
-                        fontSize: "10",
-                        fontWeight: "200"
-                    },
-                    formatter(params) {
-                        var seriesName = params[0].seriesName;
-                        var name = params[0].name;
-                        var val = params[0].value;
-                        var str = name + ":" + "<br/>" + seriesName + ":" + val;
-                        // var str = name +':'+ val
-                        return str;
-                    },
-                    // formatter: '{a0} <br/>日期：{b} <br />价格： {c0}' + "%",
-                    // axisPointer: {
-                    //    type: 'shadow'
-                    // },
-                    // 提示框位置（超出屏幕时不能被隐藏）
-                    position: function(point, params, dom, rect, size) {
-                        var x = 0; // x坐标位置
-                        var y = 0; // y坐标位置
+            // myEchart.clear();
 
-                        // 当前鼠标位置
-                        var pointX = point[0];
-                        var pointY = point[1];
+            // 折线图随着窗口的变化自适应
+            this.$nextTick(() => {
+                // myEchart.resize();
+            });
 
-                        // 外层div大小
-                        // var viewWidth = size.viewSize[0];
-                        // var viewHeight = size.viewSize[1];
 
-                        // 提示框大小
-                        var boxWidth = size.contentSize[0];
-                        var boxHeight = size.contentSize[1];
 
-                        // boxWidth > pointX 说明鼠标左边放不下提示框
-                        if (boxWidth > pointX) {
-                            x = 5;
-                        } else {
-                            // 左边放的下
-                            x = pointX - boxWidth;
-                        }
-
-                        // boxHeight > pointY 说明鼠标上边放不下提示框
-                        if (boxHeight > pointY) {
-                            y = 5;
-                        } else {
-                            // 上边放得下
-                            y = pointY - boxHeight;
-                        }
-
-                        return [x, y];
-                    }
-                },
-                grid: {
-                    // 间距是 根据x、y轴计算的；假如都是0，x、y轴的label汉字就隐藏掉了。
-                    left: "0", // 默认10%，给24就挺合适的。
-                    top: "5%", // 默认60
-                    right: "1%", // 默认10%
-                    bottom: "5%", // 默认60
-
-                    // width: '100%', // grid 组件的宽度。默认自适应。
-                    // height: '100%',
-
-                    containLabel: true, // grid 区域是否包含坐标轴的刻度标签。(如果true的时候，上下左右可以为0了)
-
-                    // show:true, // 是否显示直角坐标系网格。是否显示grid，grid:show后，下面的一些参数生效。
-                    // backgroundColor:'#ccac62',
-                    // borderColor:"#000",
-
+            if (!this.flag) {
+                // 如果没有点击菜单项，让数据整体渲染
+                var option = {
                     tooltip: {
+                        trigger: "axis",
+                        backgroundColor: "#6797ff", //通过设置rgba调节背景颜色与透明度
+                        color: "#fff",
+                        borderWidth: "1",
+                        fontSize: "10",
+                        fontWeight: "200",
+                        borderColor: "transparent",
+                        textStyle: {
+                            color: "white",
+                            fontSize: "10",
+                            fontWeight: "200"
+                        },
                         formatter(params) {
-                            // return params.name + ":" + params.data.value + "/" + params.data.date;
-                            // var seriesName = params[0].seriesName
+                            var seriesName = params[0].seriesName;
                             var name = params[0].name;
                             var val = params[0].value;
-                            var str = name + ":" + "<br/>" + val;
-                            return str;
-                        }
-                    } // 本坐标系特定的 tooltip 设定。(可以有多个grid)
-                },
-                xAxis: {
-                    type: "category",
-                    axisTick: {
-                        show: false //不显示坐标轴刻度线
-                    },
-                    axisLine: {
-                        lineStyle: {
-                            color: "#C3D3E0",
-                            fontSize: 11,
-                            fontWeight: 200,
-                            fontFamily: "PingFangSC-Medium;"
-                        }
-                    },
-                    nameTextStyle: {
-                        fontSize: 11
-                    },
-                    axisLabel: {
-                        formatter: function(value) {
-                            var date = new Date(value);
-                            var hourse = date.getHours();
-                            var minu = date.getMinutes();
-                            var secon = date.getSeconds();
-
-                            hourse = hourse < 10 ? "0" + hourse : hourse;
-                            minu = minu < 10 ? "0" + minu : minu;
-                            secon = secon < 10 ? "0" + secon : secon;
-
-                            var str = hourse + ":" + minu + ":" + secon;
-                            // return (idx === 0 || mon=='1')? value : [hourse,minu,secon].join(':');
+                            var str = name + ":" + "<br/>" + seriesName + ":" + val;
+                            // var str = name +':'+ val
                             return str;
                         },
-                        textStyle: {
-                            fontSize: 11
-                        }
-                        //  interval:14,
-                    },
+                        // formatter: '{a0} <br/>日期：{b} <br />价格： {c0}' + "%",
+                        // axisPointer: {
+                        //    type: 'shadow'
+                        // },
+                        // 提示框位置（超出屏幕时不能被隐藏）
+                        position: function(point, params, dom, rect, size) {
+                            var x = 0; // x坐标位置
+                            var y = 0; // y坐标位置
 
-                    data: x //x
-                },
-                yAxis: {
-                    // position:'right',
-                    type: "value",
-                    nameLocation: "start",
-                    axisLine: {
-                        show: false, //不显示坐标轴线
-                        color: "#C3D3E0",
-                        lineStyle: {
+                            // 当前鼠标位置
+                            var pointX = point[0];
+                            var pointY = point[1];
+
+                            // 外层div大小
+                            // var viewWidth = size.viewSize[0];
+                            // var viewHeight = size.viewSize[1];
+
+                            // 提示框大小
+                            var boxWidth = size.contentSize[0];
+                            var boxHeight = size.contentSize[1];
+
+                            // boxWidth > pointX 说明鼠标左边放不下提示框
+                            if (boxWidth > pointX) {
+                                x = 5;
+                            } else {
+                                // 左边放的下
+                                x = pointX - boxWidth;
+                            }
+
+                            // boxHeight > pointY 说明鼠标上边放不下提示框
+                            if (boxHeight > pointY) {
+                                y = 5;
+                            } else {
+                                // 上边放得下
+                                y = pointY - boxHeight;
+                            }
+
+                            return [x, y];
+                        }
+                    },
+                    grid: {
+                        // 间距是 根据x、y轴计算的；假如都是0，x、y轴的label汉字就隐藏掉了。
+                        left: "0", // 默认10%，给24就挺合适的。
+                        top: "5%", // 默认60
+                        right: "1%", // 默认10%
+                        bottom: "5%", // 默认60
+
+                        // width: '100%', // grid 组件的宽度。默认自适应。
+                        // height: '100%',
+
+                        containLabel: true, // grid 区域是否包含坐标轴的刻度标签。(如果true的时候，上下左右可以为0了)
+
+                        // show:true, // 是否显示直角坐标系网格。是否显示grid，grid:show后，下面的一些参数生效。
+                        // backgroundColor:'#ccac62',
+                        // borderColor:"#000",
+
+                        tooltip: {
+                            formatter(params) {
+                                // return params.name + ":" + params.data.value + "/" + params.data.date;
+                                // var seriesName = params[0].seriesName
+                                var name = params[0].name;
+                                var val = params[0].value;
+                                var str = name + ":" + "<br/>" + val;
+                                return str;
+                            }
+                        } // 本坐标系特定的 tooltip 设定。(可以有多个grid)
+                    },
+                    xAxis: {
+                        type: "category",
+                        axisTick: {
+                            show: false //不显示坐标轴刻度线
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: "#C3D3E0",
+                                fontSize: 11,
+                                fontWeight: 200,
+                                fontFamily: "PingFangSC-Medium;"
+                            }
+                        },
+                        nameTextStyle: {
+                            fontSize: 11
+                        },
+                        axisLabel: {
+                            formatter: function(value) {
+                                var date = new Date(value);
+                                var hourse = date.getHours();
+                                var minu = date.getMinutes();
+                                var secon = date.getSeconds();
+
+                                hourse = hourse < 10 ? "0" + hourse : hourse;
+                                minu = minu < 10 ? "0" + minu : minu;
+                                secon = secon < 10 ? "0" + secon : secon;
+
+                                var str = hourse + ":" + minu + ":" + secon;
+                                // return (idx === 0 || mon=='1')? value : [hourse,minu,secon].join(':');
+                                return str;
+                            },
+                            textStyle: {
+                                fontSize: 11
+                            }
+                            //  interval:14,
+                        },
+
+                        data: x //x
+                    },
+                    yAxis: {
+                        // position:'right',
+                        type: "value",
+                        nameLocation: "start",
+                        axisLine: {
+                            show: false, //不显示坐标轴线
                             color: "#C3D3E0",
-                            fontFamily: "PingFangSC-Medium;"
-                        }
+                            lineStyle: {
+                                color: "#C3D3E0",
+                                fontFamily: "PingFangSC-Medium;"
+                            }
+                        },
+                        axisTick: {
+                            show: false //不显示坐标轴刻度线
+                        },
+                        axisLabel: {
+                            formatter: "{value} ",
+                            textStyle: {
+                                fontSize: 10
+                            }
+                        },
+                        nameTextStyle: {
+                            align: "center"
+                        },
+                        scale: true,
+                        max: maxVal, //设置y轴值最大值
+                        min: 0,
+                        splitNumber: 3, //设置y轴值间隔
+                        boundaryGap: [0.2, 0.2]
                     },
-                    axisTick: {
-                        show: false //不显示坐标轴刻度线
-                    },
-                    axisLabel: {
-                        formatter: "{value} ",
+                    series: [{
+                        name: this.title,
+                        symbol: "none", //去掉折线上面的小圆点
+                        lineStyle: {
+                            normal: {
+                                color: "#5D8EF4", //设置折线图的颜色
+                                width: 2 //设置折线图的宽度
+                            }
+                        },
+                        markArea: {
+                            // animation: true,
+                            // animationDuration: 1000,
+                            // animationEasing: 'linear',
+                            // animationDelay: function(idx) {
+                            //     return idx * 10;
+                            // }
+
+                        },
+                        data: y, //y
+                        type: "line",
+                        smooth: true,
+                        // animationDelay: function(idx) {
+                        //     return idx * 10;
+                        // }
+                    }],
+                    // animation: true,
+                    // animationEasing: 'elasticOut',
+                    // animationDelayUpdate: function(idx) {
+                    //     return idx * 5;
+                    // },
+                    dataZoom: [{
+                        id: "dataZoomX",
+                        type: "inside",
+                        xAxisIndex: [0],
+                        filterMode: "none",
+                        start: 0,
+                        end: 100
+                    }]
+                };
+
+                myEchart.setOption(option);
+                console.log(0, 'flag:', this.flag, '数据整体渲染0000000000')
+            } else {
+                 myEchart.clear();
+                var option = {
+                    tooltip: {
+                        trigger: "axis",
+                        backgroundColor: "#6797ff", //通过设置rgba调节背景颜色与透明度
+                        color: "#fff",
+                        borderWidth: "1",
+                        fontSize: "10",
+                        fontWeight: "200",
+                        borderColor: "transparent",
                         textStyle: {
-                            fontSize: 10
+                            color: "white",
+                            fontSize: "10",
+                            fontWeight: "200"
+                        },
+                        formatter(params) {
+                            var seriesName = params[0].seriesName;
+                            var name = params[0].name;
+                            var val = params[0].value;
+                            var str = name + ":" + "<br/>" + seriesName + ":" + val;
+                            // var str = name +':'+ val
+                            return str;
+                        },
+                        // formatter: '{a0} <br/>日期：{b} <br />价格： {c0}' + "%",
+                        // axisPointer: {
+                        //    type: 'shadow'
+                        // },
+                        // 提示框位置（超出屏幕时不能被隐藏）
+                        position: function(point, params, dom, rect, size) {
+                            var x = 0; // x坐标位置
+                            var y = 0; // y坐标位置
+
+                            // 当前鼠标位置
+                            var pointX = point[0];
+                            var pointY = point[1];
+
+                            // 外层div大小
+                            // var viewWidth = size.viewSize[0];
+                            // var viewHeight = size.viewSize[1];
+
+                            // 提示框大小
+                            var boxWidth = size.contentSize[0];
+                            var boxHeight = size.contentSize[1];
+
+                            // boxWidth > pointX 说明鼠标左边放不下提示框
+                            if (boxWidth > pointX) {
+                                x = 5;
+                            } else {
+                                // 左边放的下
+                                x = pointX - boxWidth;
+                            }
+
+                            // boxHeight > pointY 说明鼠标上边放不下提示框
+                            if (boxHeight > pointY) {
+                                y = 5;
+                            } else {
+                                // 上边放得下
+                                y = pointY - boxHeight;
+                            }
+
+                            return [x, y];
                         }
                     },
-                    nameTextStyle: {
-                        align: "center"
+                    grid: {
+                        // 间距是 根据x、y轴计算的；假如都是0，x、y轴的label汉字就隐藏掉了。
+                        left: "0", // 默认10%，给24就挺合适的。
+                        top: "5%", // 默认60
+                        right: "1%", // 默认10%
+                        bottom: "5%", // 默认60
+
+                        // width: '100%', // grid 组件的宽度。默认自适应。
+                        // height: '100%',
+
+                        containLabel: true, // grid 区域是否包含坐标轴的刻度标签。(如果true的时候，上下左右可以为0了)
+
+                        // show:true, // 是否显示直角坐标系网格。是否显示grid，grid:show后，下面的一些参数生效。
+                        // backgroundColor:'#ccac62',
+                        // borderColor:"#000",
+
+                        tooltip: {
+                            formatter(params) {
+                                // return params.name + ":" + params.data.value + "/" + params.data.date;
+                                // var seriesName = params[0].seriesName
+                                var name = params[0].name;
+                                var val = params[0].value;
+                                var str = name + ":" + "<br/>" + val;
+                                return str;
+                            }
+                        } // 本坐标系特定的 tooltip 设定。(可以有多个grid)
                     },
-                    scale: true,
-                    max: maxVal, //设置y轴值最大值
-                    min: 0,
-                    splitNumber: 3, //设置y轴值间隔
-                    boundaryGap: [0.2, 0.2]
-                },
-                series: [{
-                    name: this.title,
-                    symbol: "none", //去掉折线上面的小圆点
-                    lineStyle: {
-                        normal: {
-                            color: "#5D8EF4", //设置折线图的颜色
-                            width: 2 //设置折线图的宽度
-                        }
+                    xAxis: {
+                        type: "category",
+                        axisTick: {
+                            show: false //不显示坐标轴刻度线
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: "#C3D3E0",
+                                fontSize: 11,
+                                fontWeight: 200,
+                                fontFamily: "PingFangSC-Medium;"
+                            }
+                        },
+                        nameTextStyle: {
+                            fontSize: 11
+                        },
+                        axisLabel: {
+                            formatter: function(value) {
+                                var date = new Date(value);
+                                var hourse = date.getHours();
+                                var minu = date.getMinutes();
+                                var secon = date.getSeconds();
+
+                                hourse = hourse < 10 ? "0" + hourse : hourse;
+                                minu = minu < 10 ? "0" + minu : minu;
+                                secon = secon < 10 ? "0" + secon : secon;
+
+                                var str = hourse + ":" + minu + ":" + secon;
+                                // return (idx === 0 || mon=='1')? value : [hourse,minu,secon].join(':');
+                                return str;
+                            },
+                            textStyle: {
+                                fontSize: 11
+                            }
+                            //  interval:14,
+                        },
+
+                        data: x //x
                     },
-                    markArea: {
-                        animation: true,
-                        animationDuration: 1000,
-                        animationEasing: 'linear',
+                    yAxis: {
+                        // position:'right',
+                        type: "value",
+                        nameLocation: "start",
+                        axisLine: {
+                            show: false, //不显示坐标轴线
+                            color: "#C3D3E0",
+                            lineStyle: {
+                                color: "#C3D3E0",
+                                fontFamily: "PingFangSC-Medium;"
+                            }
+                        },
+                        axisTick: {
+                            show: false //不显示坐标轴刻度线
+                        },
+                        axisLabel: {
+                            formatter: "{value} ",
+                            textStyle: {
+                                fontSize: 10
+                            }
+                        },
+                        nameTextStyle: {
+                            align: "center"
+                        },
+                        scale: true,
+                        max: maxVal, //设置y轴值最大值
+                        min: 0,
+                        splitNumber: 3, //设置y轴值间隔
+                        boundaryGap: [0.2, 0.2]
+                    },
+                    series: [{
+                        name: this.title,
+                        symbol: "none", //去掉折线上面的小圆点
+                        lineStyle: {
+                            normal: {
+                                color: "#5D8EF4", //设置折线图的颜色
+                                width: 2 //设置折线图的宽度
+                            }
+                        },
+                        markArea: {
+                            animation: true,
+                            animationDuration: 1000,
+                            animationEasing: 'linear',
+                            animationDelay: function(idx) {
+                                return idx * 10;
+                            }
+
+                        },
+                        data: y, //y
+                        type: "line",
+                        smooth: true,
                         animationDelay: function(idx) {
                             return idx * 10;
                         }
-
+                    }],
+                    animation: true,
+                    animationEasing: 'elasticOut',
+                    animationDelayUpdate: function(idx) {
+                        return idx * 5;
                     },
-                    data: y, //y
-                    type: "line",
-                    smooth: true,
-                    animationDelay: function(idx) {
-                        return idx * 10;
-                    }
-                }],
-                animation: true,
-                animationEasing: 'elasticOut',
-                animationDelayUpdate: function(idx) {
-                    return idx * 5;
-                },
-                dataZoom: [{
-                    id: "dataZoomX",
-                    type: "inside",
-                    xAxisIndex: [0],
-                    filterMode: "none",
-                    start: 0,
-                    end: 100
-                }]
-            };
-            // 折线图随着窗口的变化自适应
-            this.$nextTick(() => {
-                myEchart.resize();
-            });
-
-             let isMenuClick=this.$store.state.isMenuClickFlag;  
-              
-            if (isMenuClick) {
+                    dataZoom: [{
+                        id: "dataZoomX",
+                        type: "inside",
+                        xAxisIndex: [0],
+                        filterMode: "none",
+                        start: 0,
+                        end: 100
+                    }]
+                };
                 // 如果点击了菜单项开启定时器，让数据动态渲染
-                setTimeout(() => {
-                    myEchart.setOption(option);
-                }, 0);
-            }else{
-                // 如果没有点击菜单项，让数据整体渲染
-              myEchart.setOption(option); 
+                myEchart.setOption(option);
+                    console.log(11111, '数据动态渲染')
+                // setTimeout(() => {
+                   
+                //     myEchart.setOption(option);
+                //     console.log(11111, '数据动态渲染')
+                // }, 0);
+
             }
+
+            //  setTimeout(() => {
+            //         myEchart.setOption(option);
+            //         console.log(22,'数据动态渲染')
+            //     }, 0);
 
 
             // myEchart.setOption(option,true);
@@ -266,6 +479,7 @@ export default {
                 myEchart.resize();
             });
         },
+
         // 生成折线图
         getPic() {
             if (this.lineDat.x && this.lineDat.y) {
@@ -283,6 +497,10 @@ export default {
             if (val) {
                 this.getPic();
             }
+        },
+        '$store.state.isMenuClickFlag': function(val) {
+            this.flag = val ? true : false;
+            console.log(6, this.flag);
         }
     }
 };
