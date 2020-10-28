@@ -40,7 +40,7 @@ export default {
         return {};
     },
     methods: {
-        getEchartData(x, y, maxVal) {
+        getEchartData(x, y, maxVal,) {
             // var canvasLine = document.getElementById("canvasLine");
             var myEchart = echarts.init(this.$refs.canvasLine);
             myEchart.clear();
@@ -245,11 +245,19 @@ export default {
             this.$nextTick(() => {
                 myEchart.resize();
             });
-            // 开启定时器，让数据动态渲染
-            setTimeout(()=>{
+
+             let isMenuClick=this.$store.state.isMenuClickFlag;  
+              
+            if (isMenuClick) {
+                // 如果点击了菜单项开启定时器，让数据动态渲染
+                setTimeout(() => {
+                    myEchart.setOption(option);
+                }, 0);
+            }else{
+                // 如果没有点击菜单项，让数据整体渲染
               myEchart.setOption(option); 
-            },0);
-            
+            }
+
 
             // myEchart.setOption(option,true);
 

@@ -9,22 +9,22 @@
                             <ul class="headTitle">
                                 <li class="headTitleItem" v-for="(item,index) in headTitleData" :key="item.code" :class="{activeClass:isCheckedCode==item.code}" @click="titleClick(item.code,index)">{{item.name}}</li>
                             </ul>
-                            <div class=" widthReal lineRelative" >
+                            <div class=" widthReal lineRelative">
                                 <About6 class="lineAbsolute" :isCheckedIndex="this.isCheckedIndex" />
                             </div>
                         </div>
                     </scroll>
                     <!-- dots 左滑动省略号 -->
                     <div class="dots" v-if="dotsShow">
-                         <div class="dotsAbsolute">...</div>
+                        <div class="dotsAbsolute">...</div>
                     </div>
                 </div>
     
     
                 <!-- <div class="logRight" @click="toWarningPage">
-                                <img src="../assets/images/icon_warning.png" alt="">
-                                <p>报警({{alertCount}})/变更</p>
-                            </div> -->
+                                    <img src="../assets/images/icon_warning.png" alt="">
+                                    <p>报警({{alertCount}})/变更</p>
+                                </div> -->
             </div>
             <!-- / inner -->
             <div class="centerCard">
@@ -44,7 +44,7 @@
                             <div class="centerCardBottomItemBox" v-for="(item,index) in centerCardBottomData" :key="index">
                                 <h2 class="centerCardBottomItemVal">{{item.value}}</h2>
                                 <span class="centerCardBottomItemUnit">{{item.name}}</span>
-                            </div> 
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -62,6 +62,7 @@ import About from '../views/About.vue'
 import Scroll from './scroll/Scroll'
 import { reqHeadAreaData, reqHeadCardData, reqAlertCountData } from '../api'
 import { Dialog } from 'vant';
+import { setTimeout } from 'timers';
 export default {
     name: 'HelloWorld',
     components: {
@@ -83,7 +84,7 @@ export default {
             centerCardBottomData: [{ id: 1, val: '601', unit: '响应时间(毫秒)' }, { id: 2, val: '100%', unit: '系统成功率' }, { id: 3, val: '99.5%', unit: '业务成功率' }],
             isCheckedCode: 'JWAM',
             headTitleData: [],
-            dotsShow:true,
+            dotsShow: true,
         }
     },
     watch: {
@@ -96,14 +97,14 @@ export default {
                 await this.getHeadCardData();
             }
         },
-           //x轴滚动的距离
-         '$store.state.distanceX':function(val){
-            if(Math.abs(val)>165){
-               this.dotsShow=false
-            }else{
-              this.dotsShow=true
+        //x轴滚动的距离
+        '$store.state.distanceX': function(val) {
+            if (Math.abs(val) > 165) {
+                this.dotsShow = false
+            } else {
+                this.dotsShow = true
             }
-            
+
         },
     },
     destroyed() {
@@ -154,7 +155,7 @@ export default {
 
                 var result = await reqHeadCardData(this.isCheckedCode);
                 if (result && result.code == '0') {
-                       
+
                     var data = result.data.info_list;
                     this.tipContent = result.data.source_dec;
                     this.centerCardHeadObj = data.shift();
@@ -186,7 +187,8 @@ export default {
                 this.isTipShow = true;
             }
 
-            // console.log(this.isCheckedCode)
+            //改变首页菜单点击状态 用以区别折线图是否动态展示
+             this.isMenuClickFlagFn();
         },
         tipClick() {
             Dialog({ message: `${this.tipContent}` });
@@ -203,7 +205,17 @@ export default {
             } catch (e) {
                 console.log(e)
             }
+        },
+        //记录首页菜单点击状态 用以区别折线图是否动态展示
+        isMenuClickFlagFn() {
+            // 把首页菜单点击状态改成true(动态展示展现图)并存储到Vuex
+            this.$store.commit('isMenuClickFlagEdit', true);
+            //10s后把首页菜单点击状态更改成false并存储到Vuex
+            setTimeout(() => {
+                this.$store.commit('isMenuClickFlagEdit', false);
+            }, 10000);
         }
+
     },
     created() {
         this.getAlertCountData();

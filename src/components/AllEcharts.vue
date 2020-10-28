@@ -95,6 +95,9 @@ export default {
         echartsHeadLiClick(code, index) {
             this.isChecked = code; //区域编码
             this.isCheckedIndex = index; //记录被点击index
+
+            //改变首页菜单点击状态 用以区别折线图是否动态展示
+            this.isMenuClickFlagFn();
         },
         // 折线图数据
         async getAllLineEchartsData() {
@@ -190,7 +193,21 @@ export default {
         timeBtnClick(name) {
             this.isTimeChecked = name;
             this.getAllLineEchartsData();
+
+            //改变首页菜单点击状态 用以区别折线图是否动态展示
+            this.isMenuClickFlagFn();
+        },
+        //记录首页菜单点击状态 用以区别折线图是否动态展示
+        isMenuClickFlagFn() {
+            // 把首页菜单点击状态改成true(动态展示展现图)并存储到Vuex
+            this.$store.commit('isMenuClickFlagEdit', true);
+
+            //10s后把首页菜单点击状态更改成false并存储到Vuex
+            setTimeout(() => {
+                this.$store.commit('isMenuClickFlagEdit', false);
+            }, 10000);
         }
+
     },
 
     mounted() {
