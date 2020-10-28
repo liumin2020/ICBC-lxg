@@ -20,6 +20,7 @@ export default new Vuex.Store({
     distanceX:0,  //x轴滚动的距离
     WarningNum:0, //当前点击的报警信息数量
     noPieView:false,// 展示/隐藏‘暂无饼图数据’提示框
+    isMenuClickFlag:false,//记录首页菜单点击状态 用以区别折线图是否动态展示
   },
   mutations: {
     //报警数量
@@ -79,6 +80,11 @@ export default new Vuex.Store({
      // 展示/隐藏‘暂无饼图数据’提示框，
      noPieViewEdit(state,playLoad){
       state.noPieView=playLoad;
+
+    },
+    //记录首页菜单点击状态 用以区别折线图是否动态展示
+    isMenuClickFlagEdit(state,playLoad){
+      state.isMenuClickFlag=playLoad;
 
     },
     

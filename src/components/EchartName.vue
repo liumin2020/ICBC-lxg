@@ -13,62 +13,58 @@
 </template>
 
 <script type="text/ecmascript-6">
-import echarts from 'echarts'
+import echarts from "echarts";
 export default {
-
     // props:['lineDat'],
     props: {
-        title:{
-            type:String,
+        title: {
+            type: String,
             default: () => {
-                return ''
+                return "";
             }
         },
         lineDat: {
             type: Object,
             default: () => {
-                return {}
+                return {};
             }
         },
         isLoading: {
             type: Boolean,
             default: () => {
-                return true
+                return true;
             }
         }
     },
     data() {
-        return {
-        
-        }
+        return {};
     },
     methods: {
         getEchartData(x, y, maxVal) {
             // var canvasLine = document.getElementById("canvasLine");
             var myEchart = echarts.init(this.$refs.canvasLine);
-            myEchart.clear()
+            myEchart.clear();
             var option = {
                 tooltip: {
-                    trigger: 'axis',
-                    backgroundColor: '#6797ff', //通过设置rgba调节背景颜色与透明度
-                    color: '#fff',
-                    borderWidth: '1',
-                    fontSize: '10',
-                    fontWeight: '200',
-                    borderColor: 'transparent',
+                    trigger: "axis",
+                    backgroundColor: "#6797ff", //通过设置rgba调节背景颜色与透明度
+                    color: "#fff",
+                    borderWidth: "1",
+                    fontSize: "10",
+                    fontWeight: "200",
+                    borderColor: "transparent",
                     textStyle: {
-                        color: 'white',
-                        fontSize: '10',
-                        fontWeight: '200'
+                        color: "white",
+                        fontSize: "10",
+                        fontWeight: "200"
                     },
                     formatter(params) {
-                        var seriesName = params[0].seriesName
+                        var seriesName = params[0].seriesName;
                         var name = params[0].name;
                         var val = params[0].value;
                         var str = name + ":" + "<br/>" + seriesName + ":" + val;
                         // var str = name +':'+ val
-                        return str
-
+                        return str;
                     },
                     // formatter: '{a0} <br/>日期：{b} <br />价格： {c0}' + "%",
                     // axisPointer: {
@@ -94,27 +90,28 @@ export default {
                         // boxWidth > pointX 说明鼠标左边放不下提示框
                         if (boxWidth > pointX) {
                             x = 5;
-                        } else { // 左边放的下
+                        } else {
+                            // 左边放的下
                             x = pointX - boxWidth;
                         }
 
                         // boxHeight > pointY 说明鼠标上边放不下提示框
                         if (boxHeight > pointY) {
                             y = 5;
-                        } else { // 上边放得下
+                        } else {
+                            // 上边放得下
                             y = pointY - boxHeight;
                         }
-
 
                         return [x, y];
                     }
                 },
                 grid: {
                     // 间距是 根据x、y轴计算的；假如都是0，x、y轴的label汉字就隐藏掉了。
-                    left: '0', // 默认10%，给24就挺合适的。
-                    top: '5%', // 默认60
-                    right: '1%', // 默认10%
-                    bottom: '5%', // 默认60
+                    left: "0", // 默认10%，给24就挺合适的。
+                    top: "5%", // 默认60
+                    right: "1%", // 默认10%
+                    bottom: "5%", // 默认60
 
                     // width: '100%', // grid 组件的宽度。默认自适应。
                     // height: '100%',
@@ -131,13 +128,13 @@ export default {
                             // var seriesName = params[0].seriesName
                             var name = params[0].name;
                             var val = params[0].value;
-                            var str = name + ':' + '<br/>' + val;
-                            return str
+                            var str = name + ":" + "<br/>" + val;
+                            return str;
                         }
-                    }, // 本坐标系特定的 tooltip 设定。(可以有多个grid)
+                    } // 本坐标系特定的 tooltip 设定。(可以有多个grid)
                 },
                 xAxis: {
-                    type: 'category',
+                    type: "category",
                     axisTick: {
                         show: false //不显示坐标轴刻度线
                     },
@@ -146,11 +143,11 @@ export default {
                             color: "#C3D3E0",
                             fontSize: 11,
                             fontWeight: 200,
-                            fontFamily: 'PingFangSC-Medium;'
+                            fontFamily: "PingFangSC-Medium;"
                         }
                     },
                     nameTextStyle: {
-                        fontSize: 11,
+                        fontSize: 11
                     },
                     axisLabel: {
                         formatter: function(value) {
@@ -159,7 +156,7 @@ export default {
                             var minu = date.getMinutes();
                             var secon = date.getSeconds();
 
-                            hourse = hourse < 10 ? '0' + hourse : hourse;
+                            hourse = hourse < 10 ? "0" + hourse : hourse;
                             minu = minu < 10 ? "0" + minu : minu;
                             secon = secon < 10 ? "0" + secon : secon;
 
@@ -169,7 +166,7 @@ export default {
                         },
                         textStyle: {
                             fontSize: 11
-                        },
+                        }
                         //  interval:14,
                     },
 
@@ -177,28 +174,27 @@ export default {
                 },
                 yAxis: {
                     // position:'right',
-                    type: 'value',
-                    nameLocation: 'start',
+                    type: "value",
+                    nameLocation: "start",
                     axisLine: {
                         show: false, //不显示坐标轴线
-                        color: '#C3D3E0',
+                        color: "#C3D3E0",
                         lineStyle: {
                             color: "#C3D3E0",
-                            fontFamily: 'PingFangSC-Medium;'
+                            fontFamily: "PingFangSC-Medium;"
                         }
                     },
                     axisTick: {
                         show: false //不显示坐标轴刻度线
                     },
                     axisLabel: {
-                        formatter: '{value} ',
+                        formatter: "{value} ",
                         textStyle: {
                             fontSize: 10
                         }
                     },
                     nameTextStyle: {
-                        align: 'center',
-
+                        align: "center"
                     },
                     scale: true,
                     max: maxVal, //设置y轴值最大值
@@ -211,91 +207,120 @@ export default {
                     symbol: "none", //去掉折线上面的小圆点
                     lineStyle: {
                         normal: {
-                            color: '#5D8EF4', //设置折线图的颜色
+                            color: "#5D8EF4", //设置折线图的颜色
                             width: 2 //设置折线图的宽度
                         }
                     },
-                    markArea: {},
-                    data: y, //y
-                    type: 'line',
-                    smooth: true,
+                    markArea: {
+                        animation: true,
+                        animationDuration: 1000,
+                        animationEasing: 'linear',
+                        animationDelay: function(idx) {
+                            return idx * 10;
+                        }
 
+                    },
+                    data: y, //y
+                    type: "line",
+                    smooth: true,
+                    animationDelay: function(idx) {
+                        return idx * 10;
+                    }
                 }],
+                animation: true,
+                animationEasing: 'elasticOut',
+                animationDelayUpdate: function(idx) {
+                    return idx * 5;
+                },
                 dataZoom: [{
-                    id: 'dataZoomX',
-                    type: 'inside',
+                    id: "dataZoomX",
+                    type: "inside",
                     xAxisIndex: [0],
-                    filterMode: 'none',
+                    filterMode: "none",
                     start: 0,
                     end: 100
                 }]
-            }
+            };
             // 折线图随着窗口的变化自适应
-            this.$nextTick(()=>{
-              myEchart.resize();
-            })
+            this.$nextTick(() => {
+                myEchart.resize();
+            });
+            // 开启定时器，让数据动态渲染
+            setTimeout(()=>{
+              myEchart.setOption(option); 
+            },0);
+            
 
-            myEchart.setOption(option)
+            // myEchart.setOption(option,true);
 
-           //折线图随着窗口的变化自适应
-            window.addEventListener('resize',function(){
-              myEchart.resize();
-            })
+            //折线图随着窗口的变化自适应
+            window.addEventListener("resize", function() {
+                myEchart.resize();
+            });
         },
         // 生成折线图
-         getPic() {
+        getPic() {
             if (this.lineDat.x && this.lineDat.y) {
                 var maxValue = Math.max(...this.lineDat.y);
                 this.getEchartData(this.lineDat.x, this.lineDat.y, maxValue);
-            } 
-
+            }
         }
     },
-    
-     async mounted() {
-        await this.getPic();
 
+    async mounted() {
+        await this.getPic();
     },
     watch: {
-        'lineDat':function(val){
-             if(val){
-                 this.getPic();
-             }
-        },
+        lineDat: function(val) {
+            if (val) {
+                this.getPic();
+            }
+        }
     }
-}
+};
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-px2rem(designpx){
-     $rem=37.5px;
- return (designpx / $rem) rem;
+px2rem(designpx) {
+    $rem = 37.5px;
+    return (designpx / $rem) rem;
 }
-.myEchart
-  width 100%
-  height px2rem(300px)
-//   background pink
-.myEchartTitle
-  width 100%
-  height px2rem(58px)
-.myEchartTitle
-  margin 0
-  padding 0
-  font-size px2rem(28px)
-  font-family PingFangSC-Regular
-  color #4375DF
-  letter-spacing 0
-.canvasLine
-  width 100%
-  height 100%
-//   background yellow
-.H2None
-  width 100%
-  height px2rem(300px)
-  line-height px2rem(300px)
-.loadingPosition
-   position absolute
-   left 50%
-   top 50%
 
+.myEchart {
+    width: 100%;
+    height: px2rem(300px);
+}
+
+// background pink
+.myEchartTitle {
+    width: 100%;
+    height: px2rem(58px);
+}
+
+.myEchartTitle {
+    margin: 0;
+    padding: 0;
+    font-size: px2rem(28px);
+    font-family: PingFangSC-Regular;
+    color: #4375DF;
+    letter-spacing: 0;
+}
+
+.canvasLine {
+    width: 100%;
+    height: 100%;
+}
+
+// background yellow
+.H2None {
+    width: 100%;
+    height: px2rem(300px);
+    line-height: px2rem(300px);
+}
+
+.loadingPosition {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
 </style>
