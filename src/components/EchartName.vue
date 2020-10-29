@@ -38,7 +38,7 @@ export default {
     },
     data() {
         return {
-            flag: true,
+            flag: false,
         };
     },
     methods: {
@@ -224,26 +224,36 @@ export default {
                             }
                         },
                         markArea: {
-                            // animation: true,
-                            // animationDuration: 1000,
-                            // animationEasing: 'linear',
-                            // animationDelay: function(idx) {
-                            //     return idx * 10;
-                            // }
+                            animation: true,
+                            animationThreshold: 200,
+                            animationDuration: 100,
+                            animationEasing: 'elasticInOut',
+                            animationDelay: function(idx) {
+                                return idx * 10;
+                            }
 
+                        },
+                        animationDurationUpdate: function(idx) {
+                            // 越往后的数据时长越大
+                            return idx * 100;
+                        },
+                        animationEasingUpdate: 'elasticInOut',
+                        animationDelayUpdate: function(idx) {
+                            // 越往后的数据延迟越大
+                            return idx * 100;
                         },
                         data: y, //y
                         type: "line",
                         smooth: true,
-                        // animationDelay: function(idx) {
-                        //     return idx * 10;
-                        // }
+                        animationDelay: function(idx) {
+                            return idx * 10;
+                        }
                     }],
-                    // animation: true,
-                    // animationEasing: 'elasticOut',
-                    // animationDelayUpdate: function(idx) {
-                    //     return idx * 5;
-                    // },
+                    animation: true,
+                    animationEasing: 'elasticInOut',
+                    animationDelayUpdate: function(idx) {
+                        return idx * 5;
+                    },
                     dataZoom: [{
                         id: "dataZoomX",
                         type: "inside",
@@ -253,11 +263,13 @@ export default {
                         end: 100
                     }]
                 };
-
-                myEchart.setOption(option);
-                console.log(0, 'flag:', this.flag, '数据整体渲染0000000000')
-            } else {
+                // myEchart.getOption();
                  myEchart.clear();
+                myEchart.setOption(option);
+                // console.log(0, 'flag:', this.flag, '数据整体渲染0000000000')
+            } else {
+                myEchart.getOption();
+                myEchart.clear();
                 var option = {
                     tooltip: {
                         trigger: "axis",
@@ -457,9 +469,10 @@ export default {
                 };
                 // 如果点击了菜单项开启定时器，让数据动态渲染
                 myEchart.setOption(option);
-                    console.log(11111, '数据动态渲染')
+                 
+                // console.log(11111, '数据动态渲染')
                 // setTimeout(() => {
-                   
+
                 //     myEchart.setOption(option);
                 //     console.log(11111, '数据动态渲染')
                 // }, 0);
@@ -500,7 +513,6 @@ export default {
         },
         '$store.state.isMenuClickFlag': function(val) {
             this.flag = val ? true : false;
-            console.log(6, this.flag);
         }
     }
 };
