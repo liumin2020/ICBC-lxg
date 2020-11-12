@@ -45,16 +45,13 @@ export default {
         getEchartData(x, y, maxVal) {
             // var canvasLine = document.getElementById("canvasLine");
             var myEchart = echarts.init(this.$refs.canvasLine);
-            // myEchart.clear();
-
-            // 折线图随着窗口的变化自适应
-            this.$nextTick(() => {
-                // myEchart.resize();
-            });
-
-
+            myEchart.clear(); //2020-10-29 10:16
 
             if (!this.flag) {
+                // 折线图随着窗口的变化自适应
+                this.$nextTick(() => {
+                    myEchart.resize(); //2020-10-29 10:16
+                });
                 // 如果没有点击菜单项，让数据整体渲染
                 var option = {
                     tooltip: {
@@ -264,11 +261,11 @@ export default {
                     }]
                 };
                 // myEchart.getOption();
-                 myEchart.clear();
-                myEchart.setOption(option);
+                myEchart.clear();
+                myEchart.setOption(option, true);
                 // console.log(0, 'flag:', this.flag, '数据整体渲染0000000000')
             } else {
-                myEchart.getOption();
+                // myEchart.getOption();
                 myEchart.clear();
                 var option = {
                     tooltip: {
@@ -469,7 +466,7 @@ export default {
                 };
                 // 如果点击了菜单项开启定时器，让数据动态渲染
                 myEchart.setOption(option);
-                 
+
                 // console.log(11111, '数据动态渲染')
                 // setTimeout(() => {
 
@@ -506,14 +503,15 @@ export default {
         await this.getPic();
     },
     watch: {
+         '$store.state.isMenuClickFlag':function(val) {
+            this.flag = val ? true : false;
+        },
         lineDat: function(val) {
             if (val) {
                 this.getPic();
             }
         },
-        '$store.state.isMenuClickFlag': function(val) {
-            this.flag = val ? true : false;
-        }
+       
     }
 };
 </script>
